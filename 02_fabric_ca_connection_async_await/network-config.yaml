@@ -1,0 +1,53 @@
+name: itc
+version: "1.0"
+
+client:
+  organization: Procurement
+  credentialStore:
+    path: "/tmp/hfc-kvs/org1"
+    cryptoStore:
+      path: "/tmp/hfc-cvs/org1"
+
+channels:
+  mychannels:
+    orderers:
+      - Orderer
+    peers:
+      Procurement:
+        endorsingPeer: true
+        chaincodeQuery: true
+        ledgerQuery: true
+        eventSource: true
+
+organizations:
+  Procurement:
+    mspid: ProcurementMSP
+    peers:
+      - itc-shrimps.procurement.com
+    certificateAuthorities:
+      - fabricCA
+    adminPrivateKey:
+      path: procurementOrg_msp/admin_keystore/faaf29d203bd91fe1dd16e88d9f7bfc214b850e0d8c1b149b1619efd88217106_sk
+    signedCert:
+      path: procurementOrg_msp/admincerts/cert.pem
+
+orderers:
+  Orderer:
+    url: 'grpcs://itc-shrimps.orderer.com:7050'
+
+peers:
+  Procurement:
+    url: 'grpcs://itc-shrimps.procurement.com:7051'
+    eventUrl: 'grpcs://itc-shrimps.procurement.com:7053'
+
+certificateAuthorities:
+  fabricCA:
+    url: http://fabric-ca.com:7054
+    httpOptions:
+      verify: false
+    tlsCACerts:
+      path: 
+    registrar:
+      - enrollId: admin
+        enrollSecret: password
+    caName: CA-ITC
